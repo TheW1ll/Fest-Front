@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "420471406105",
+    "project_id": "hackaton-da764",
+    "storage_bucket": "hackaton-da764.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420471406105:android:68a2adb7babaf6ff32f488",
+        "android_client_info": {
+          "package_name": "fr.istic.hacki.festival"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "420471406105-f7i8to0ch5po2a4fttp8q5qkr4ii2jl3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmDKxycKg94koYdv5HSl4gxZF9CcS7Aws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "420471406105-f7i8to0ch5po2a4fttp8q5qkr4ii2jl3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
