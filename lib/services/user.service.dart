@@ -3,8 +3,9 @@ import 'package:festival/models/user.dart';
 import 'package:festival/models/role.dart';
 import 'package:festival/services/FireConn.dart';
 import 'package:festival/services/auth.service.dart';
+import 'package:flutter/cupertino.dart';
 
-class UserService {
+class UserService extends ChangeNotifier {
   static final UserService _singleton = initialize();
 
   UserService._internal();
@@ -24,6 +25,7 @@ class UserService {
   /// Set the local user
   setLocalUser(UserModel? user) {
     _localUser = user;
+    notifyListeners();
   }
 
   /// Get the local user from FireAuth
