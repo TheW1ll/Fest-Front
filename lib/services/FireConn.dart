@@ -13,4 +13,8 @@ class FireConn {
   CollectionReference getUserCollection() {
     return db.collection('users');
   }
+  CollectionReference getFestivalCollection() {
+    return db.collection('festivals');
+  }
+
 }
