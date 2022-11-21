@@ -1,3 +1,5 @@
+import 'package:festival/models/role.dart';
+import 'package:festival/models/user.dart';
 import 'package:festival/services/user.service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -27,6 +29,9 @@ class AuthService {
       user = (await auth.createUserWithEmailAndPassword(
               email: email, password: password))
           .user;
+      if(user != null) {
+        UserService().insertUser(UserModel(user.uid, Role.user, email, []));
+      }
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
     }

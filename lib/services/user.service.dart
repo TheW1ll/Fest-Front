@@ -73,4 +73,10 @@ class UserService {
         .doc(_localUser?.id)
         .update({'favorites': FieldValue.arrayRemove([festivalId])});
   }
+
+  Future insertUser(UserModel userModel) async{
+    return userCollectionReference
+        .doc(userModel.id)
+        .set(userModel);
+  }
 }
