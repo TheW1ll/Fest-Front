@@ -61,22 +61,20 @@ class UserService {
   /// Add a festival to the favorite list of the currently logged in user
   Future addFestivalToFavorites(String festivalId) async {
     _localUser?.favoriteFestivals.add(festivalId);
-    return userCollectionReference
-        .doc(_localUser?.id)
-        .update({'favorites': FieldValue.arrayUnion([festivalId])});
+    return userCollectionReference.doc(_localUser?.id).update({
+      'favorites': FieldValue.arrayUnion([festivalId])
+    });
   }
 
   /// Remove a festival from the favorite list of the currently logged in user
   Future removeFestivalFromFavorites(String festivalId) async {
     _localUser?.favoriteFestivals.remove(festivalId);
-    return userCollectionReference
-        .doc(_localUser?.id)
-        .update({'favorites': FieldValue.arrayRemove([festivalId])});
+    return userCollectionReference.doc(_localUser?.id).update({
+      'favorites': FieldValue.arrayRemove([festivalId])
+    });
   }
 
-  Future insertUser(UserModel userModel) async{
-    return userCollectionReference
-        .doc(userModel.id)
-        .set(userModel);
+  Future insertUser(UserModel userModel) async {
+    return userCollectionReference.doc(userModel.id).set(userModel);
   }
 }

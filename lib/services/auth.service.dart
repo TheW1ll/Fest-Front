@@ -29,7 +29,7 @@ class AuthService {
       user = (await auth.createUserWithEmailAndPassword(
               email: email, password: password))
           .user;
-      if(user != null) {
+      if (user != null) {
         UserService().insertUser(UserModel(user.uid, Role.user, email, []));
       }
     } on FirebaseAuthException catch (e) {
