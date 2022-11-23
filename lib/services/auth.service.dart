@@ -25,15 +25,11 @@ class AuthService {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
-    try {
-      user = (await auth.createUserWithEmailAndPassword(
-              email: email, password: password))
-          .user;
-      if (user != null) {
-        UserService().insertUser(UserModel(user.uid, Role.user, email, []));
-      }
-    } on FirebaseAuthException catch (e) {
-      debugPrint(e.message);
+    user = (await auth.createUserWithEmailAndPassword(
+            email: email, password: password))
+        .user;
+    if (user != null) {
+      UserService().insertUser(UserModel(user.uid, Role.user, email, []));
     }
 
     return user;
@@ -47,21 +43,15 @@ class AuthService {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
-    try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+    UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-      user = userCredential.user;
+    user = userCredential.user;
 
-      if (user != null) {
-        UserService()
-            .getUser()
-            .then((user) => UserService().setLocalUser(user));
-      }
-    } on FirebaseAuthException catch (e) {
-      debugPrint(e.message);
+    if (user != null) {
+      UserService().getUser().then((user) => UserService().setLocalUser(user));
     }
 
     return user;
