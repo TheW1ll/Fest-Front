@@ -1,3 +1,4 @@
+import 'package:festival/components/paginated_festival_list.dart';
 import 'package:festival/firebase_options.dart';
 import 'package:festival/login.dart';
 import 'package:festival/register.dart';
@@ -45,6 +46,11 @@ final GoRouter _router = GoRouter(
       name: 'home',
       path: '/home',
       builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      name: 'festivals',
+      path: '/festivals',
+      builder: (context, state) => const FestivalList(),
     )
   ],
   initialLocation: '/home',
