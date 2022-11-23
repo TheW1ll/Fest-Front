@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:festival/services/FireConn.dart';
 import 'package:festival/models/festival.dart';
 import 'package:festival/models/event_status.dart';
+import 'package:tuple/tuple.dart';
 import 'package:uuid/uuid.dart';
 
 class FestivalService {
@@ -23,6 +24,28 @@ class FestivalService {
   static initialize() {
     festivalCollectionReference = FireConn().getFestivalCollection();
     return FestivalService._internal();
+  }
+
+  Future<Tuple2<List<Festival>, DocumentSnapshot>> getNextFestivals(
+      DocumentSnapshot? startAt, int numberOfItems) async {
+    late QueryDocumentSnapshot lastFestival;
+    Query query = festivalCollectionReference.orderBy("name");
+
+    if (startAt != null) {
+      query = query.startAfterDocument(startAt).limit(numberOfItems);
+    } else {
+      query = query.limit(numberOfItems);
+    }
+
+    final festivals = await query
+        .get()
+        .then((value) {
+          lastFestival = value.docs.last;
+          return value.docs
+              .map((e) => Festival.from(e.data() as Map<String, dynamic>))
+              .toList();
+        });
+    return Future.value(Tuple2(festivals, lastFestival));
   }
 
   modifyStatus(EventStatus event) {
@@ -68,7 +91,6 @@ class FestivalService {
     festival?.creatorId = creatorId;
     festival?.contactEmail = contactEmail;
     festival?.availableTickets = availableTickets;
-    festival?.longitude = longitude;
-    festival?.latitude = latitude;
+    festival?.geolocation = [longitude, latitude];
   }
 }

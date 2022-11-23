@@ -1,4 +1,5 @@
 import 'package:festival/details.dart';
+import 'package:festival/components/paginated_festival_list.dart';
 import 'package:festival/firebase_options.dart';
 import 'package:festival/login.dart';
 import 'package:festival/models/festival.dart';
