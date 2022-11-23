@@ -75,7 +75,19 @@ class _RegisterState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return const Scaffold(body: Text('Loading'));
+      return Scaffold(
+          body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text(
+              'Festoche',
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500),
+            ),
+            CircularProgressIndicator()
+          ],
+        ),
+      ));
     }
 
     return Scaffold(
@@ -84,7 +96,7 @@ class _RegisterState extends State<RegisterPage> {
         child: Form(
             key: _formKey,
             child: (registerSuccess)
-                ? Success()
+                ? const Success()
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -183,6 +195,8 @@ class _RegisterState extends State<RegisterPage> {
 }
 
 class Success extends StatelessWidget {
+  const Success({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(

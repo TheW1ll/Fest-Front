@@ -17,24 +17,13 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  bool loading = true;
+  bool loading = false;
   final AuthService authService = AuthService();
   UserValue user = UserValue();
   String? emailError;
   String? passwordError;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  @override
-  initState() {
-    super.initState();
-
-    authService.getAuthUser().then((User? user) {
-      setState(() {
-        loading = false;
-      });
-    });
-  }
 
   submit() {
     final form = _formKey.currentState!;
@@ -81,7 +70,19 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return const Scaffold(body: Text('Loading'));
+      return Scaffold(
+          body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text(
+              'Festoche',
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500),
+            ),
+            CircularProgressIndicator()
+          ],
+        ),
+      ));
     }
 
     return Scaffold(
