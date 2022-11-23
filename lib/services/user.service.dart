@@ -77,6 +77,6 @@ class UserService extends ChangeNotifier {
   }
 
   Future insertUser(UserModel userModel) async {
-    return userCollectionReference.doc(userModel.id).set(userModel);
+    return userCollectionReference.doc(userModel.id).set(userModel.toJson());
   }
 }
