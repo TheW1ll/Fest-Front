@@ -24,17 +24,17 @@ final GoRouter _router = GoRouter(
   errorBuilder: (context, state) => ErrorPage(state: state),
   redirect: (context, state) {
     debugPrint(state.location.toString());
-    //   final isLoggedIn = UserService().isLoggedIn();
-    //   final isLoggingIn = state.location == '/login';
-    //   final isRegistering = state.location == '/register';
+    // final isLoggedIn = UserService().isLoggedIn();
+    // final isLoggingIn = state.location == '/login';
+    // final isRegistering = state.location == '/register';
 
-    //   if (!isLoggedIn) {
-    //     if (!isRegistering && !isLoggedIn) return '/login';
-    //   } else if (isLoggingIn) {
-    //     return '/home';
-    //   }
+    // if (!isLoggedIn) {
+    //   if (!isRegistering && !isLoggedIn) return '/login';
+    // } else if (isLoggingIn) {
+    //   return '/home';
+    // }
 
-    //   return null;
+    // return null;
   },
   refreshListenable: UserService(),
   routes: [

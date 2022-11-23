@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 Festival f = Festival(
-    "FEST_30003_24",
-    EventStatus.COMPLETE,
-    "Écran libre - festival international du court-métrage",
-    "Aigues-Mortes",
-    "30003",
-    "Cinéma, audiovisuel",
-    "http://ecranlibre-aiguesmortes.fr",
-    "",
-    "ecranlibre.aiguesmortes@orange.fr",
-    30,
-    43.566091,
-    4.189267);
+  "FEST_30003_24",
+  EventStatus.COMPLETE,
+  "Écran libre - festival international du court-métrage",
+  "Aigues-Mortes",
+  "30003",
+  "Cinéma, audiovisuel",
+  "http://ecranlibre-aiguesmortes.fr",
+  "",
+  "ecranlibre.aiguesmortes@orange.fr",
+  30,
+  [43.566091, 4.189267],
+);
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({
@@ -61,6 +61,9 @@ class _DetailPageSate extends State<DetailsPage> {
         status = "Unknown status";
     }
 
+    String website =
+        (widget.festival.webSite != null) ? widget.festival.webSite! : "";
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       child: Column(children: [
@@ -74,7 +77,7 @@ class _DetailPageSate extends State<DetailsPage> {
             row("Theme : ", widget.festival.majorField),
             row("Available tickets : ",
                 widget.festival.availableTickets.toString()),
-            row("Website : ", widget.festival.webSite),
+            row("Website : ", website),
           ],
         ),
         const SizedBox(height: 16),
