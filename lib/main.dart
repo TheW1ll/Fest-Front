@@ -97,6 +97,7 @@ final GoRouter _router = GoRouter(
         return NoTransitionPage(
             child: ScaffoldHome(
           title: 'Details',
+          backLocation: '/fest/list',
           child: (festival == null)
               ? const ErrorPage(msg: 'Festival not found')
               : DetailsPage(festival: festival!),
@@ -105,7 +106,7 @@ final GoRouter _router = GoRouter(
     ),
     ShellRoute(
         pageBuilder: ((context, state, child) => MaterialPage(
-            child: ScaffoldWithBottomNavBar(
+                child: ScaffoldWithBottomNavBar(
               tabs: const [
                 ScaffoldWithNavBarTabItem(
                   initialLocation: '/home',
