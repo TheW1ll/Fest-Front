@@ -8,7 +8,6 @@ import 'package:tuple/tuple.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:io';
 
-
 class FestivalService {
   var uuid = const Uuid();
 
@@ -41,37 +40,41 @@ class FestivalService {
       query = query.limit(numberOfItems);
     }
 
-    final festivals = await query
-        .get()
-        .then((value) {
-          lastFestival = value.docs.last;
-          return value.docs
-              .map((e) => Festival.from(e.data() as Map<String, dynamic>))
-              .toList();
-        });
+    final festivals = await query.get().then((value) {
+      lastFestival = value.docs.last;
+      return value.docs
+          .map((e) => Festival.from(e.data() as Map<String, dynamic>))
+          .toList();
+    });
     return Future.value(Tuple2(festivals, lastFestival));
   }
 
-  Future<List<Festival>> getAllFestivals(){
-    return festivalCollectionReference.get().then((value){
+  Future<List<Festival>> getAllFestivals() {
+    return festivalCollectionReference.get().then((value) {
       final allFest = value.docs
-          .map((festival) => Festival.from(festival.data() as Map<String,dynamic>)).toList();
+          .map((festival) =>
+              Festival.from(festival.data() as Map<String, dynamic>))
+          .toList();
       return allFest;
     });
   }
 
-  Future<String?> getIdFestByName(String name){
-    return festivalCollectionReference.where("name", isEqualTo:name).get().then((value) {
-       final allFest = value.docs
-          .map((festival) => Festival.from(festival.data() as Map<String,dynamic>)).toList();
-       if(allFest.isNotEmpty){
-         return allFest[0].id;
-       }else{
-         return null;
+  Future<String?> getIdFestByName(String name) {
+    return festivalCollectionReference
+        .where("name", isEqualTo: name)
+        .get()
+        .then((value) {
+      final allFest = value.docs
+          .map((festival) =>
+              Festival.from(festival.data() as Map<String, dynamic>))
+          .toList();
+      if (allFest.isNotEmpty) {
+        return allFest[0].id;
+      } else {
+        return null;
       }
     });
   }
-
 
   Future writeDataInJson(Festival fest) async {
     var input = await File("festival.json").readAsString();
@@ -80,22 +83,24 @@ class FestivalService {
     File("festival.json").writeAsString(data.toString());
   }
 
-
-  Future<List<Festival>> getRandomFestival(int numberOfRandom){
-    return festivalCollectionReference.limit(numberOfRandom).get().then((value){
-        final listFest = value.docs
-            .map((e) => Festival.from(e.data() as Map<String,dynamic>)).toList();
-        return listFest;
+  Future<List<Festival>> getRandomFestival(int numberOfRandom) {
+    return festivalCollectionReference
+        .limit(numberOfRandom)
+        .get()
+        .then((value) {
+      final listFest = value.docs
+          .map((e) => Festival.from(e.data() as Map<String, dynamic>))
+          .toList();
+      return listFest;
     });
-   }
-
+  }
 
   modifyStatus(EventStatus event) {
     festival?.status = event;
   }
 
-  Future createFestivalInDataBase(Festival festival) async{
-    festivalCollectionReference.doc(festival.id).set(festival);
+  Future createFestivalInDataBase(Festival festival) async {
+    festivalCollectionReference.doc(festival.id).set(festival.toJson());
   }
 
   Future modifyFestivalInDataBase(Festival festival) async {
@@ -108,7 +113,6 @@ class FestivalService {
       return festival!;
     });
   }
-
 
   modifyFestival(
       String id,

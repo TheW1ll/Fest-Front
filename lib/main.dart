@@ -74,6 +74,16 @@ final GoRouter _router = GoRouter(
       ),
     ),
     GoRoute(
+      name: 'editFest',
+      path: '/fest/edit/:uid',
+      pageBuilder: (context, state) => NoTransitionPage(
+        child: ScaffoldHome(
+          title: 'Create Festival',
+          child: CreationFestival(idFestival: state.params['uid']),
+        ),
+      ),
+    ),
+    GoRoute(
       redirect: (context, state) async {
         String? uid = state.params['uid'];
         if (uid != null) {

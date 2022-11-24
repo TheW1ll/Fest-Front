@@ -34,7 +34,7 @@ class Festival {
         json['city'],
         json['postalCode'],
         json['majorField'],
-        json['webSite'],
+        json['website'],
         json["creatorId"],
         json['contactEmail'],
         json['availableTickets'],

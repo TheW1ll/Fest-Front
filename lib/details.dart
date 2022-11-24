@@ -83,11 +83,11 @@ class _DetailPageSate extends State<DetailsPage> {
         const SizedBox(height: 16),
         ElevatedButton.icon(
           onPressed: () {
-            context.goNamed('createFest');
+            context.goNamed('editFest', params: {'uid': widget.festival.id});
           },
-          icon: const Icon(Icons.add),
+          icon: const Icon(Icons.edit),
           label: const Text(
-            "Create",
+            "Edit",
           ),
         ),
       ]),

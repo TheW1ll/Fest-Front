@@ -305,7 +305,6 @@ class _CFState extends State<CreationFestival> {
 
                               FestivalService()
                                   .createFestivalInDataBase(festival);
-                              context.goNamed('home');
                             } else {
                               List<double> listLoc = [
                                 double.parse(
@@ -334,6 +333,7 @@ class _CFState extends State<CreationFestival> {
                               FestivalService()
                                   .modifyFestivalInDataBase(festival);
                             }
+                            context.goNamed('home');
                           },
                           child: Text('Validate')),
                     ),
