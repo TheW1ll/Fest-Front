@@ -1,5 +1,5 @@
+import 'package:festival/components/error.dart';
 import 'package:festival/details.dart';
-import 'package:festival/components/paginated_festival_list.dart';
 import 'package:festival/firebase_options.dart';
 import 'package:festival/login.dart';
 import 'package:festival/models/festival.dart';
@@ -21,7 +21,8 @@ void main() async {
 Festival? festival;
 
 final GoRouter _router = GoRouter(
-  errorBuilder: (context, state) => ErrorPage(state: state),
+  errorBuilder: (context, state) =>
+      ErrorPage(msg: 'Could not find location', sub: state.location.toString()),
   redirect: (context, state) {
     debugPrint(state.location.toString());
     // final isLoggedIn = UserService().isLoggedIn();
@@ -47,11 +48,6 @@ final GoRouter _router = GoRouter(
       name: 'register',
       path: '/register',
       builder: (context, state) => const RegisterPage(),
-    ),
-    GoRoute(
-      name: 'error',
-      path: '/error',
-      builder: (context, state) => ErrorPage(state: state),
     ),
     ShellRoute(
         builder: ((context, state, child) => ScaffoldWithBottomNavBar(
@@ -83,17 +79,18 @@ final GoRouter _router = GoRouter(
               String? uid = state.params['uid'];
               if (uid != null) {
                 festival = await getFestival(uid);
-                if (festival != null) {
-                  return null;
-                }
               }
-
-              return "/error?errormsg=Festival%20not%20found"; // Exception('Festival not found');
+              return null;
             },
             name: 'details',
             path: '/details/:uid',
-            pageBuilder: (context, state) =>
-                NoTransitionPage(child: DetailsPage(festival: festival!)),
+            pageBuilder: (context, state) {
+              return NoTransitionPage(
+                child: (festival == null)
+                    ? const ErrorPage(msg: 'Festival not found')
+                    : DetailsPage(festival: festival!),
+              );
+            },
           ),
         ])
   ],
@@ -101,7 +98,7 @@ final GoRouter _router = GoRouter(
 );
 
 Future<Festival?> getFestival(String uid) {
-  return Future.value(f);
+  return Future.value(null);
 }
 
 class MyApp extends StatelessWidget {
@@ -144,25 +141,6 @@ class _HomeState extends State<HomePage> {
             },
             child: const Text('Login'))
       ],
-    );
-  }
-}
-
-class ErrorPage extends StatelessWidget {
-  const ErrorPage({super.key, required this.state});
-
-  final GoRouterState state;
-
-  @override
-  Widget build(BuildContext context) {
-    String errorMsg = (state.error != null)
-        ? state.error.toString()
-        : state.queryParams['errormsg'].toString();
-    return Scaffold(
-      key: state.pageKey,
-      body: Center(
-        child: Text(errorMsg),
-      ),
     );
   }
 }
