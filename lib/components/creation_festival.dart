@@ -8,6 +8,7 @@ import 'package:festival/services/user.service.dart';
 
 class CreationFestival extends StatefulWidget {
   String? idFestival;
+
   CreationFestival({super.key, this.idFestival});
 
   @override
@@ -263,7 +264,7 @@ class _CFState extends State<CreationFestival> {
                         value: value,
                         child: Text(
                           value,
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       );
                     }).toList(),
@@ -287,14 +288,12 @@ class _CFState extends State<CreationFestival> {
                                     Latitude.text.replaceAll(",", ".")),
                               ];
 
-                              String idFest = Uuid().v4().toString();
+                              String idFest = const Uuid().v4().toString();
 
                               int statusInt = status.indexOf(state);
 
-                              String user = "";
-                              if (UserService().getLocalUser() != null) {
-                                String user = UserService().getLocalUser()!.id;
-                              }
+                              String user =
+                                  UserService().getLocalUser()?.id ?? '';
 
                               Festival festival = Festival(
                                   idFest,
@@ -321,10 +320,8 @@ class _CFState extends State<CreationFestival> {
 
                               int statusInt = status.indexOf(state);
 
-                              String user = "";
-                              if (UserService().getLocalUser() != null) {
-                                String user = UserService().getLocalUser()!.id;
-                              }
+                              String user =
+                                  UserService().getLocalUser()?.id ?? "";
 
                               Festival festival = Festival(
                                   widget.idFestival.toString(),

@@ -4,6 +4,7 @@ import 'package:festival/models/festival.dart';
 import 'package:festival/services/user.service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({
@@ -61,6 +62,12 @@ class _DetailPageSate extends State<DetailsPage> {
     });
   }
 
+  void _shareWebsite() {
+    if (widget.festival.webSite != null) {
+      Share.share(widget.festival.webSite!);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     String? status;
@@ -103,6 +110,15 @@ class _DetailPageSate extends State<DetailsPage> {
                 widget.festival.availableTickets.toString()),
             row("Website : ", website),
           ],
+        ),
+        ElevatedButton.icon(
+          onPressed: () {
+            _shareWebsite();
+          },
+          icon: const Icon(Icons.share),
+          label: const Text(
+            "Share",
+          ),
         ),
         const SizedBox(height: 16),
         (UserService().getLocalUser()?.id != widget.festival.creatorId &&
