@@ -35,9 +35,18 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("Idx : $_currentIndex");
     return Scaffold(
       appBar: AppBar(
         title: const Text('Festoche'),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: IconButton(
+                onPressed: () => context.goNamed('profile'),
+                icon: const Icon(Icons.account_circle, size: 36),
+              )),
+        ],
       ),
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(

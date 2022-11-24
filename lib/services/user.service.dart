@@ -28,6 +28,8 @@ class UserService extends ChangeNotifier {
     notifyListeners();
   }
 
+  String? getEmail() => _localUser?.email;
+
   /// Get the local user from FireAuth
   Future<UserModel?> getUser() async {
     return AuthService().getAuthUser().then((authUser) {

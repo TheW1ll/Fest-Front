@@ -1,5 +1,6 @@
 import 'package:festival/components/error.dart';
 import 'package:festival/components/home.dart';
+import 'package:festival/components/profile.dart';
 import 'package:festival/components/scaffold_with_bottom_nav_bar.dart';
 import 'package:festival/details.dart';
 import 'package:festival/firebase_options.dart';
@@ -51,8 +52,16 @@ final GoRouter _router = GoRouter(
       path: '/register',
       builder: (context, state) => const RegisterPage(),
     ),
+    GoRoute(
+      name: 'profile',
+      path: '/profile',
+      pageBuilder: (context, state) => const NoTransitionPage(
+        child: Profile(),
+      ),
+    ),
     ShellRoute(
-        builder: ((context, state, child) => ScaffoldWithBottomNavBar(
+        pageBuilder: ((context, state, child) => MaterialPage(
+                child: ScaffoldWithBottomNavBar(
               tabs: const [
                 ScaffoldWithNavBarTabItem(
                   initialLocation: '/home',
@@ -66,7 +75,7 @@ final GoRouter _router = GoRouter(
                 ),
               ],
               child: child,
-            )),
+            ))),
         routes: [
           GoRoute(
             name: 'home',
@@ -109,6 +118,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: _router,
     );
   }

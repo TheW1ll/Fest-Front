@@ -22,11 +22,6 @@ class _HomeState extends State<HomePage> {
         Text(status),
         ElevatedButton(
             onPressed: () {
-              AuthService().signOut();
-            },
-            child: const Text('Sign out')),
-        ElevatedButton(
-            onPressed: () {
               context.goNamed('login');
             },
             child: const Text('Login'))
