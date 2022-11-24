@@ -4,9 +4,7 @@ import 'package:festival/services/festival.service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
-
-import '../models/user.dart';
-import '../services/user.service.dart';
+import 'package:festival/services/user.service.dart';
 
 class CreationFestival extends StatefulWidget {
   String? idFestival;
@@ -293,9 +291,9 @@ class _CFState extends State<CreationFestival> {
 
                               int statusInt = status.indexOf(state);
 
-                              String  user ="";
-                              if(UserService().getLocalUser() != null){
-                                String  user = UserService().getLocalUser()!.id;
+                              String user = "";
+                              if (UserService().getLocalUser() != null) {
+                                String user = UserService().getLocalUser()!.id;
                               }
 
                               Festival festival = Festival(
@@ -323,9 +321,9 @@ class _CFState extends State<CreationFestival> {
 
                               int statusInt = status.indexOf(state);
 
-                              String  user ="";
-                              if(UserService().getLocalUser() != null){
-                                String  user = UserService().getLocalUser()!.id;
+                              String user = "";
+                              if (UserService().getLocalUser() != null) {
+                                String user = UserService().getLocalUser()!.id;
                               }
 
                               Festival festival = Festival(
@@ -345,7 +343,7 @@ class _CFState extends State<CreationFestival> {
                             }
                             context.goNamed('home');
                           },
-                          child: Text('Validate')),
+                          child: const Text('Validate')),
                     ),
                   ])
                 ],

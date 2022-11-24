@@ -85,9 +85,12 @@ class _DetailPageSate extends State<DetailsPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       child: Column(children: [
-        StarButton(
-            isFavorite: _isFavoriteOfCurrentUser(),
-            onButtonClicked: _onStarButtonClicked),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const Text("Favoris :"),
+          StarButton(
+              isFavorite: _isFavoriteOfCurrentUser(),
+              onButtonClicked: _onStarButtonClicked),
+        ]),
         Table(
           defaultColumnWidth: const IntrinsicColumnWidth(),
           children: [
@@ -102,15 +105,19 @@ class _DetailPageSate extends State<DetailsPage> {
           ],
         ),
         const SizedBox(height: 16),
-        ElevatedButton.icon(
-          onPressed: () {
-            context.goNamed('editFest', params: {'uid': widget.festival.id});
-          },
-          icon: const Icon(Icons.edit),
-          label: const Text(
-            "Edit",
-          ),
-        ),
+        (UserService().getLocalUser()?.id != widget.festival.creatorId &&
+                !UserService().isAdmin())
+            ? Container()
+            : ElevatedButton.icon(
+                onPressed: () {
+                  context
+                      .goNamed('editFest', params: {'uid': widget.festival.id});
+                },
+                icon: const Icon(Icons.edit),
+                label: const Text(
+                  "Edit",
+                ),
+              ),
       ]),
     );
   }

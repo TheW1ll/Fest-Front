@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:festival/services/festival.service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:io';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
@@ -33,47 +33,48 @@ class _MapFestivalsState extends State<MapFestivals> {
     getAllLocationForFestival();
     return MaterialApp(
         home: Scaffold(
-          body: FlutterMap(
-            options: MapOptions(
-                center: LatLng(51, 0.12),
-                zoom: 6,
-                onTap: (_, __) {
-                  _popupLayerController.hideAllPopups();
-                }),
-            nonRotatedChildren: [
-              AttributionWidget.defaultWidget(
-                  source: "OpenStreetMap contributors", onSourceTapped: null),
-            ],
-            children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                //userAgentPackageName: 'com.example.app',
-              ),
-              MarkerClusterLayerWidget(
-                  options: MarkerClusterLayerOptions(
-                      markers: listMarker,
-                      popupOptions: PopupOptions(
-                          popupBuilder: (BuildContext b, Marker m) {
-                            return popUp(m.key.toString()
-                                .replaceAll("[<'", "")
-                                .replaceAll("'>]", ""));
-                          },
-                          popupSnap: PopupSnap.markerTop,
-                          popupController: _popupLayerController,
-                          popupState: PopupState(initiallySelectedMarkers: [])),
-                      maxClusterRadius: 120,
-                      size: Size(40, 40),
-                      fitBoundsOptions:
-                      FitBoundsOptions(padding: EdgeInsets.all(50)),
-                      builder: (BuildContext context, List<Marker> markers) {
-                        return FloatingActionButton(
-                          child: Text(markers.length.toString()),
-                          onPressed: null,
-                        );
-                      })),
-            ],
+      body: FlutterMap(
+        options: MapOptions(
+            center: LatLng(51, 0.12),
+            zoom: 6,
+            onTap: (_, __) {
+              _popupLayerController.hideAllPopups();
+            }),
+        nonRotatedChildren: [
+          AttributionWidget.defaultWidget(
+              source: "OpenStreetMap contributors", onSourceTapped: null),
+        ],
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            //userAgentPackageName: 'com.example.app',
           ),
-        ));
+          MarkerClusterLayerWidget(
+              options: MarkerClusterLayerOptions(
+                  markers: listMarker,
+                  popupOptions: PopupOptions(
+                      popupBuilder: (BuildContext b, Marker m) {
+                        return popUp(m.key
+                            .toString()
+                            .replaceAll("[<'", "")
+                            .replaceAll("'>]", ""));
+                      },
+                      popupSnap: PopupSnap.markerTop,
+                      popupController: _popupLayerController,
+                      popupState: PopupState(initiallySelectedMarkers: [])),
+                  maxClusterRadius: 120,
+                  size: const Size(40, 40),
+                  fitBoundsOptions:
+                      const FitBoundsOptions(padding: EdgeInsets.all(50)),
+                  builder: (BuildContext context, List<Marker> markers) {
+                    return FloatingActionButton(
+                      onPressed: null,
+                      child: Text(markers.length.toString()),
+                    );
+                  })),
+        ],
+      ),
+    ));
   }
 
   Widget popUp(String name) {
@@ -84,24 +85,26 @@ class _MapFestivalsState extends State<MapFestivals> {
       child: Row(
         children: [
           Text(name),
-          Expanded(child: Container(),),
+          Expanded(
+            child: Container(),
+          ),
           IconButton(
               padding: const EdgeInsets.only(bottom: 2),
               onPressed: () {
                 FestivalService().getIdFestByName(name).then((value) {
                   if (value != null) {
-                    print(value);
+                    context.goNamed('details', params: {'uid': value});
                   }
                 });
-                //TODO: Aller a la page detail du festival
-              }, icon: const Icon(Icons.add))
+              },
+              icon: const Icon(Icons.add))
         ],
       ),
     );
   }
 
   Widget markerOnMap(String name) {
-    return Icon(Icons.place);
+    return const Icon(Icons.place);
   }
 
   Future<List<Marker>> getAllMarkers() async {

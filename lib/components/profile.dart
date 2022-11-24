@@ -1,7 +1,6 @@
 import 'package:festival/services/auth.service.dart';
 import 'package:festival/services/user.service.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
