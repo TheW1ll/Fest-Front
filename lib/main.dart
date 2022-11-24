@@ -1,10 +1,13 @@
 import 'package:festival/components/error.dart';
 import 'package:festival/components/home.dart';
+import 'package:festival/components/map.dart';
+import 'package:festival/components/paginated_festival_list.dart';
 import 'package:festival/components/profile.dart';
 import 'package:festival/components/scaffold_with_bottom_nav_bar.dart';
 import 'package:festival/details.dart';
 import 'package:festival/firebase_options.dart';
 import 'package:festival/login.dart';
+import 'package:festival/models/event_status.dart';
 import 'package:festival/models/festival.dart';
 import 'package:festival/register.dart';
 import 'package:festival/services/user.service.dart';
@@ -68,9 +71,14 @@ final GoRouter _router = GoRouter(
                   label: 'Home',
                 ),
                 ScaffoldWithNavBarTabItem(
-                  initialLocation: '/details/1',
-                  icon: Icon(Icons.settings),
-                  label: 'Details',
+                  initialLocation: '/fest/list',
+                  icon: Icon(Icons.list),
+                  label: 'List',
+                ),
+                ScaffoldWithNavBarTabItem(
+                  initialLocation: '/map',
+                  icon: Icon(Icons.map),
+                  label: 'Map',
                 ),
               ],
               child: child,
@@ -81,6 +89,20 @@ final GoRouter _router = GoRouter(
             path: '/home',
             pageBuilder: (context, state) => const NoTransitionPage(
               child: HomePage(),
+            ),
+          ),
+          GoRoute(
+            name: 'list',
+            path: '/fest/list',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: FestivalList(),
+            ),
+          ),
+          GoRoute(
+            name: 'map',
+            path: '/map',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: MapFestivals(),
             ),
           ),
           GoRoute(
@@ -107,7 +129,19 @@ final GoRouter _router = GoRouter(
 );
 
 Future<Festival?> getFestival(String uid) {
-  return Future.value(null);
+  return Future.value(Festival(
+    uid,
+    EventStatus.COMPLETE,
+    uid,
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    30,
+    [43.566091, 4.189267],
+  ));
 }
 
 class MyApp extends StatelessWidget {

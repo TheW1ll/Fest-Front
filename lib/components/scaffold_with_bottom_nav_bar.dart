@@ -35,7 +35,6 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Idx : $_currentIndex");
     return Scaffold(
       appBar: AppBar(
         title: const Text('Festoche'),

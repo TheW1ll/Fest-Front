@@ -1,3 +1,4 @@
+import 'package:festival/components/carousel.dart';
 import 'package:festival/services/user.service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -20,10 +21,12 @@ class _HomeState extends State<HomePage> {
         const Text('APP'),
         Text(status),
         ElevatedButton(
-            onPressed: () {
-              context.goNamed('login');
-            },
-            child: const Text('Login'))
+          onPressed: () {
+            context.goNamed('login');
+          },
+          child: const Text('Login'),
+        ),
+        // const Carousel(),
       ],
     );
   }
