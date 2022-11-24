@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:festival/services/FireConn.dart';
 import 'package:festival/models/festival.dart';
 import 'package:festival/models/event_status.dart';
 import 'package:tuple/tuple.dart';
 import 'package:uuid/uuid.dart';
+import 'dart:io';
+
 
 class FestivalService {
   var uuid = const Uuid();
@@ -48,8 +52,50 @@ class FestivalService {
     return Future.value(Tuple2(festivals, lastFestival));
   }
 
+  Future<List<Festival>> getAllFestivals(){
+    return festivalCollectionReference.get().then((value){
+      final allFest = value.docs
+          .map((festival) => Festival.from(festival.data() as Map<String,dynamic>)).toList();
+      return allFest;
+    });
+  }
+
+  Future<String?> getIdFestByName(String name){
+    return festivalCollectionReference.where("name", isEqualTo:name).get().then((value) {
+       final allFest = value.docs
+          .map((festival) => Festival.from(festival.data() as Map<String,dynamic>)).toList();
+       if(allFest.isNotEmpty){
+         return allFest[0].id;
+       }else{
+         return null;
+      }
+    });
+  }
+
+
+  Future writeDataInJson(Festival fest) async {
+    var input = await File("festival.json").readAsString();
+    List<dynamic> data = json.decode(input);
+    data.add(MapEntry(fest.name, fest.geolocation));
+    File("festival.json").writeAsString(data.toString());
+  }
+
+
+  Future<List<Festival>> getRandomFestival(int numberOfRandom){
+    return festivalCollectionReference.limit(numberOfRandom).get().then((value){
+        final listFest = value.docs
+            .map((e) => Festival.from(e.data() as Map<String,dynamic>)).toList();
+        return listFest;
+    });
+   }
+
+
   modifyStatus(EventStatus event) {
     festival?.status = event;
+  }
+
+  Future createFestivalInDataBase(Festival festival) async{
+    festivalCollectionReference.doc(festival.id).set(festival);
   }
 
   modifyFestival(
