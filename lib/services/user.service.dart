@@ -28,8 +28,8 @@ class UserService extends ChangeNotifier {
     notifyListeners();
   }
 
-  UserModel getLocalUser() {
-    return _localUser!;
+  UserModel? getLocalUser() {
+    return _localUser;
   }
 
 
@@ -71,7 +71,7 @@ class UserService extends ChangeNotifier {
   Future addFestivalToFavorites(String festivalId) async {
     _localUser?.favoriteFestivals.add(festivalId);
     return userCollectionReference.doc(_localUser?.id).update({
-      'favorites': FieldValue.arrayUnion([festivalId])
+      'favoriteFestivals': FieldValue.arrayUnion([festivalId])
     });
   }
 
@@ -79,7 +79,7 @@ class UserService extends ChangeNotifier {
   Future removeFestivalFromFavorites(String festivalId) async {
     _localUser?.favoriteFestivals.remove(festivalId);
     return userCollectionReference.doc(_localUser?.id).update({
-      'favorites': FieldValue.arrayRemove([festivalId])
+      'favoriteFestivals': FieldValue.arrayRemove([festivalId])
     });
   }
 
