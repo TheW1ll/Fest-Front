@@ -6,7 +6,7 @@ import 'package:festival/components/paginated_festival_list.dart';
 import 'package:festival/components/profile.dart';
 import 'package:festival/components/scaffold_home.dart';
 import 'package:festival/components/scaffold_with_bottom_nav_bar.dart';
-import 'package:festival/details.dart';
+import 'package:festival/components/details.dart';
 import 'package:festival/firebase_options.dart';
 import 'package:festival/login.dart';
 import 'package:festival/models/festival.dart';
@@ -105,7 +105,7 @@ final GoRouter _router = GoRouter(
     ),
     ShellRoute(
         pageBuilder: ((context, state, child) => MaterialPage(
-                child: ScaffoldWithBottomNavBar(
+            child: ScaffoldWithBottomNavBar(
               tabs: const [
                 ScaffoldWithNavBarTabItem(
                   initialLocation: '/home',

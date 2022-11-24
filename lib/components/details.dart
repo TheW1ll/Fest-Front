@@ -1,21 +1,9 @@
+import 'package:festival/components/star_button.dart';
 import 'package:festival/models/event_status.dart';
 import 'package:festival/models/festival.dart';
+import 'package:festival/services/user.service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-Festival f = Festival(
-  "FEST_30003_24",
-  EventStatus.COMPLETE,
-  "Écran libre - festival international du court-métrage",
-  "Aigues-Mortes",
-  "30003",
-  "Cinéma, audiovisuel",
-  "http://ecranlibre-aiguesmortes.fr",
-  "",
-  "ecranlibre.aiguesmortes@orange.fr",
-  30,
-  [43.566091, 4.189267],
-);
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({
@@ -30,6 +18,14 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailPageSate extends State<DetailsPage> {
+  late bool isFavorite;
+
+  @override
+  void initState() {
+    isFavorite = _isFavoriteOfCurrentUser();
+    super.initState();
+  }
+
   TableRow row(String property, String value) {
     return TableRow(children: [
       Padding(
@@ -41,6 +37,28 @@ class _DetailPageSate extends State<DetailsPage> {
         child: Text(value),
       ),
     ]);
+  }
+
+  bool _isFavoriteOfCurrentUser() {
+    final localUser = UserService().getLocalUser();
+
+    if (localUser == null) {
+      return false;
+    }
+
+    return localUser.favoriteFestivals.contains(widget.festival.id);
+  }
+
+  void _onStarButtonClicked() {
+    setState(() {
+      if (_isFavoriteOfCurrentUser()) {
+        isFavorite = false;
+        UserService().removeFestivalFromFavorites(widget.festival.id);
+      } else {
+        isFavorite = true;
+        UserService().addFestivalToFavorites(widget.festival.id);
+      }
+    });
   }
 
   @override
@@ -67,6 +85,9 @@ class _DetailPageSate extends State<DetailsPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       child: Column(children: [
+        StarButton(
+            isFavorite: _isFavoriteOfCurrentUser(),
+            onButtonClicked: _onStarButtonClicked),
         Table(
           defaultColumnWidth: const IntrinsicColumnWidth(),
           children: [
