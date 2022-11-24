@@ -1,9 +1,35 @@
+import 'package:festival/components/favorite_list.dart';
+import 'package:festival/models/festival.dart';
 import 'package:festival/services/auth.service.dart';
+import 'package:festival/services/festival.service.dart';
 import 'package:festival/services/user.service.dart';
 import 'package:flutter/material.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({super.key});
+class Profile extends StatefulWidget {
+  const Profile({Key? key}) : super(key: key);
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  late List<Festival> favoriteList = [];
+
+  @override
+  void initState() {
+    fetchFavoriteFestivals().then((festivals) => setState(() {
+          favoriteList = festivals;
+        }));
+    super.initState();
+  }
+
+  Future<List<Festival>> fetchFavoriteFestivals() {
+    final localUser = UserService().getLocalUser();
+    if (localUser == null) return Future.value([]);
+
+    return Future.wait(
+        localUser.favoriteFestivals.map((id) => FestivalService().getById(id)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +72,8 @@ class Profile extends StatelessWidget {
               ]),
             ),
           ),
-        )
+        ),
+        Expanded(child: FestivalList(favoriteList: favoriteList))
       ],
     );
   }
