@@ -18,21 +18,15 @@ class _HomeState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('APP'),
-        Text(status),
-        ElevatedButton(
-          onPressed: () {
-            context.goNamed('login');
-          },
-          child: const Text('Login'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            context.goNamed('createFest');
-          },
-          child: const Text('Create Fest'),
-        ),
         const Carousel(),
+        Center(
+          child: ElevatedButton(
+            onPressed: () {
+              context.goNamed('createFest');
+            },
+            child: const Text('Create Fest'),
+          ),
+        )
       ],
     );
   }
