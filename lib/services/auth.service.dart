@@ -2,7 +2,6 @@ import 'package:festival/models/role.dart';
 import 'package:festival/models/user.dart';
 import 'package:festival/services/user.service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 
 class AuthService {
   static final AuthService _singleton = initiate();

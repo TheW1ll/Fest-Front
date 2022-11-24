@@ -7,7 +7,6 @@ import 'package:festival/firebase_options.dart';
 import 'package:festival/login.dart';
 import 'package:festival/models/festival.dart';
 import 'package:festival/register.dart';
-import 'package:festival/services/auth.service.dart';
 import 'package:festival/services/user.service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
