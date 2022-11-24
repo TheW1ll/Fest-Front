@@ -26,6 +26,12 @@ class _HomeState extends State<HomePage> {
           },
           child: const Text('Login'),
         ),
+        ElevatedButton(
+          onPressed: () {
+            context.goNamed('createFest');
+          },
+          child: const Text('Create Fest'),
+        ),
         // const Carousel(),
       ],
     );

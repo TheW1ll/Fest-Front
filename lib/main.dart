@@ -1,15 +1,17 @@
+import 'package:festival/components/creation_festival.dart';
 import 'package:festival/components/error.dart';
 import 'package:festival/components/home.dart';
 import 'package:festival/components/map.dart';
 import 'package:festival/components/paginated_festival_list.dart';
 import 'package:festival/components/profile.dart';
+import 'package:festival/components/scaffold_home.dart';
 import 'package:festival/components/scaffold_with_bottom_nav_bar.dart';
 import 'package:festival/details.dart';
 import 'package:festival/firebase_options.dart';
 import 'package:festival/login.dart';
-import 'package:festival/models/event_status.dart';
 import 'package:festival/models/festival.dart';
 import 'package:festival/register.dart';
+import 'package:festival/services/festival.service.dart';
 import 'package:festival/services/user.service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -58,12 +60,42 @@ final GoRouter _router = GoRouter(
       name: 'profile',
       path: '/profile',
       pageBuilder: (context, state) => const NoTransitionPage(
-        child: Profile(),
+        child: ScaffoldHome(title: 'Profile', child: Profile()),
       ),
+    ),
+    GoRoute(
+      name: 'createFest',
+      path: '/fest/create',
+      pageBuilder: (context, state) => NoTransitionPage(
+        child: ScaffoldHome(
+          title: 'Create Festival',
+          child: CreationFestival(),
+        ),
+      ),
+    ),
+    GoRoute(
+      redirect: (context, state) async {
+        String? uid = state.params['uid'];
+        if (uid != null) {
+          festival = await FestivalService().getById(uid);
+        }
+        return null;
+      },
+      name: 'details',
+      path: '/details/:uid',
+      pageBuilder: (context, state) {
+        return NoTransitionPage(
+            child: ScaffoldHome(
+          title: 'Details',
+          child: (festival == null)
+              ? const ErrorPage(msg: 'Festival not found')
+              : DetailsPage(festival: festival!),
+        ));
+      },
     ),
     ShellRoute(
         pageBuilder: ((context, state, child) => MaterialPage(
-            child: ScaffoldWithBottomNavBar(
+                child: ScaffoldWithBottomNavBar(
               tabs: const [
                 ScaffoldWithNavBarTabItem(
                   initialLocation: '/home',
@@ -105,44 +137,10 @@ final GoRouter _router = GoRouter(
               child: MapFestivals(),
             ),
           ),
-          GoRoute(
-            redirect: (context, state) async {
-              String? uid = state.params['uid'];
-              if (uid != null) {
-                festival = await getFestival(uid);
-              }
-              return null;
-            },
-            name: 'details',
-            path: '/details/:uid',
-            pageBuilder: (context, state) {
-              return NoTransitionPage(
-                child: (festival == null)
-                    ? const ErrorPage(msg: 'Festival not found')
-                    : DetailsPage(festival: festival!),
-              );
-            },
-          ),
         ])
   ],
   initialLocation: '/details/FEST_01053_980',
 );
-
-Future<Festival?> getFestival(String uid) {
-  return Future.value(Festival(
-    uid,
-    EventStatus.COMPLETE,
-    uid,
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    30,
-    [43.566091, 4.189267],
-  ));
-}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

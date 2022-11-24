@@ -8,55 +8,47 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: const Text('Profile'),
-          leading: BackButton(
-            onPressed: () => context.goNamed('home'),
+    return Column(
+      children: [
+        const SizedBox(height: 24),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              const CircleAvatar(
+                radius: 50,
+                backgroundColor: Color.fromARGB(255, 119, 119, 119),
+              ),
+              const SizedBox(width: 16),
+              Text(
+                (UserService().getEmail() ?? "No email"),
+                style: const TextStyle(fontSize: 18),
+              )
+            ],
+          ),
+        ),
+        const SizedBox(height: 36),
+        Container(
+          decoration: const BoxDecoration(
+              border: Border.symmetric(
+            horizontal: BorderSide(width: 1, color: Colors.black),
           )),
-      body: Column(
-        children: [
-          const SizedBox(height: 24),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                const CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Color.fromARGB(255, 119, 119, 119),
-                ),
-                const SizedBox(width: 16),
+          child: InkWell(
+            onTap: () => AuthService().signOut(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(children: const [
+                Icon(Icons.logout, color: Colors.red),
+                SizedBox(width: 16),
                 Text(
-                  (UserService().getEmail() ?? "No email"),
-                  style: const TextStyle(fontSize: 18),
+                  "Sign Out",
+                  style: TextStyle(color: Colors.red),
                 )
-              ],
+              ]),
             ),
           ),
-          const SizedBox(height: 36),
-          Container(
-            decoration: const BoxDecoration(
-                border: Border.symmetric(
-              horizontal: BorderSide(width: 1, color: Colors.black),
-            )),
-            child: InkWell(
-              onTap: () => AuthService().signOut(),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(children: const [
-                  Icon(Icons.logout, color: Colors.red),
-                  SizedBox(width: 16),
-                  Text(
-                    "Sign Out",
-                    style: TextStyle(color: Colors.red),
-                  )
-                ]),
-              ),
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }

@@ -27,7 +27,8 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
 
   // callback used to navigate to the desired tab
   void _onItemTapped(BuildContext context, int tabIndex) {
-    if (tabIndex != _currentIndex) {
+    if (GoRouter.of(context).location !=
+        widget.tabs[tabIndex].initialLocation) {
       // go to the initial location of the selected tab (by index)
       context.go(widget.tabs[tabIndex].initialLocation);
     }
