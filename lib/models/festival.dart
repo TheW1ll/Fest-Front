@@ -94,7 +94,7 @@ class Festival {
   }
 
   getAvailableTickets() {
-    return contactEmail;
+    return availableTickets;
   }
 
   setAll(

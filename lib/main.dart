@@ -60,7 +60,7 @@ final GoRouter _router = GoRouter(
     ),
     ShellRoute(
         pageBuilder: ((context, state, child) => MaterialPage(
-                child: ScaffoldWithBottomNavBar(
+            child: ScaffoldWithBottomNavBar(
               tabs: const [
                 ScaffoldWithNavBarTabItem(
                   initialLocation: '/home',
