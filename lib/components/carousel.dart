@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:festival/services/festival.service.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../models/festival.dart';
 
@@ -29,17 +30,17 @@ class _CarouselState extends State<Carousel> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: carouselFest());
+    return carouselFest();
   }
 
   Widget carouselFest() {
-
-
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height / 1.6,
-        alignment:  Alignment.topCenter,
-        margin: MediaQuery.of(context).size.width > sizeMobile ? const EdgeInsets.only(top: 30) : null,
+        alignment: Alignment.topCenter,
+        margin: MediaQuery.of(context).size.width > sizeMobile
+            ? const EdgeInsets.only(top: 30)
+            : null,
         child: CarouselSlider(
             carouselController: buttonCarousel,
             items: listFestival
@@ -51,36 +52,51 @@ class _CarouselState extends State<Carousel> {
                         Map<String, String> map = {};
                         int i = 1;
                         for (var element in listFestival) {
-                          map.putIfAbsent(element.id, () => "https://picsum.photos/${size.height.ceil()}/${size.width.ceil()}?random=$i");
+                          map.putIfAbsent(
+                              element.id,
+                              () =>
+                                  "https://picsum.photos/${size.height.ceil()}/${size.width.ceil()}?random=$i");
                           i++;
                         }
-                        return SizedBox(
-                            width: MediaQuery.of(context).size.width > sizeMobile ? MediaQuery.of(context).size.width - 400 : MediaQuery.of(context).size.width, height: 100,
-                            child: Stack(
-                              alignment: Alignment.topCenter,
-                              children: [
-                                Container(
-                                  width: size.width,
-                                  height: size.height,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                    image: CachedNetworkImageProvider(map[e.id]!),
-                                    fit: BoxFit.fitWidth,
-                                  )),
-                                  alignment: Alignment.center,
-                                  // width: MediaQuery.of(context).size.width ,
-                                  // height: 100,
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/8),
-                                  color: Colors.white,
-                                  child: Text(e.name),
-                                  width: 300,
-                                  height: 100,
-                                )
-                              ],
-                            ));
+                        return InkWell(
+                          onTap: () =>
+                              context.goNamed('details', params: {'uid': e.id}),
+                          child: SizedBox(
+                              width:
+                                  MediaQuery.of(context).size.width > sizeMobile
+                                      ? MediaQuery.of(context).size.width - 400
+                                      : MediaQuery.of(context).size.width,
+                              height: 100,
+                              child: Stack(
+                                alignment: Alignment.topCenter,
+                                children: [
+                                  Container(
+                                    width: size.width,
+                                    height: size.height,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                          map[e.id]!),
+                                      fit: BoxFit.fitWidth,
+                                    )),
+                                    alignment: Alignment.center,
+                                    // width: MediaQuery.of(context).size.width ,
+                                    // height: 100,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.only(
+                                        top:
+                                            MediaQuery.of(context).size.height /
+                                                8),
+                                    color: Colors.white,
+                                    child: Text(e.name),
+                                    width: 300,
+                                    height: 100,
+                                  )
+                                ],
+                              )),
+                        );
                       },
                     ))
                 .toList(),
@@ -89,5 +105,4 @@ class _CarouselState extends State<Carousel> {
               autoPlayAnimationDuration: const Duration(seconds: 2),
             )));
   }
-
 }

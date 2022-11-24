@@ -32,7 +32,7 @@ class _HomeState extends State<HomePage> {
           },
           child: const Text('Create Fest'),
         ),
-        // const Carousel(),
+        const Carousel(),
       ],
     );
   }
