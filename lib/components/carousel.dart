@@ -89,7 +89,7 @@ class _CarouselState extends State<Carousel> {
                                         top:
                                             MediaQuery.of(context).size.height /
                                                 8),
-                                    color: Colors.white,
+                                    color: Colors.white54,
                                     child: Text(e.name),
                                     width: 300,
                                     height: 100,
