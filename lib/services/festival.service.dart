@@ -98,6 +98,18 @@ class FestivalService {
     festivalCollectionReference.doc(festival.id).set(festival);
   }
 
+  Future modifyFestivalInDataBase(Festival festival) async {
+    festivalCollectionReference.doc(festival.id).update(festival.toJson());
+  }
+
+  Future<Festival> getById(String id) async {
+    return festivalCollectionReference.doc(id).get().then((fest) {
+      festival = Festival.from(fest.data() as Map<String, dynamic>);
+      return festival!;
+    });
+  }
+
+
   modifyFestival(
       String id,
       EventStatus status,

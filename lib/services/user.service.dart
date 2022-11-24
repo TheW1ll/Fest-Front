@@ -28,6 +28,11 @@ class UserService extends ChangeNotifier {
     notifyListeners();
   }
 
+  UserModel getLocalUser() {
+    return _localUser!;
+  }
+
+
   String? getEmail() => _localUser?.email;
 
   /// Get the local user from FireAuth
