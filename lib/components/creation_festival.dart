@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
+import '../models/user.dart';
+import '../services/user.service.dart';
+
 class CreationFestival extends StatefulWidget {
   String? idFestival;
   CreationFestival({super.key, this.idFestival});
@@ -290,6 +293,11 @@ class _CFState extends State<CreationFestival> {
 
                               int statusInt = status.indexOf(state);
 
+                              String  user ="";
+                              if(UserService().getLocalUser() != null){
+                                String  user = UserService().getLocalUser()!.id;
+                              }
+
                               Festival festival = Festival(
                                   idFest,
                                   EventStatus.values.elementAt(statusInt),
@@ -298,7 +306,7 @@ class _CFState extends State<CreationFestival> {
                                   PostalCode.text,
                                   MajorField.text,
                                   WebSite.text,
-                                  "1",
+                                  user,
                                   Email.text,
                                   int.parse(Tickets.text),
                                   listLoc);
@@ -315,8 +323,10 @@ class _CFState extends State<CreationFestival> {
 
                               int statusInt = status.indexOf(state);
 
-                              // UserModel user = UserService().getLocalUser();
-                              print(Email.text);
+                              String  user ="";
+                              if(UserService().getLocalUser() != null){
+                                String  user = UserService().getLocalUser()!.id;
+                              }
 
                               Festival festival = Festival(
                                   widget.idFestival.toString(),
@@ -326,7 +336,7 @@ class _CFState extends State<CreationFestival> {
                                   PostalCode.text,
                                   MajorField.text,
                                   WebSite.text,
-                                  "1",
+                                  user,
                                   Email.text,
                                   int.parse(Tickets.text),
                                   listLoc);
