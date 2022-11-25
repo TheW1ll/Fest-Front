@@ -73,6 +73,7 @@ class FestivalService {
 
   Future<List<Festival>> filterFestival(String query) async {
     return festivalCollectionReference.where("majorField", isEqualTo: query)
+        .limit(200)
         .get()
         .then((value) {
       final allFest = value.docs
