@@ -30,17 +30,16 @@ class FestivalService {
   }
 
   Future<Tuple2<List<Festival>, DocumentSnapshot>> getNextFestivals(
-      DocumentSnapshot? startAt, int numberOfItems) async {
+      DocumentSnapshot? startAt, int numberOfItems, String? name,
+      String? genre) async {
     late QueryDocumentSnapshot lastFestival;
     Query query = festivalCollectionReference.orderBy("name");
 
     if (startAt != null) {
-      query = query.startAfterDocument(startAt).limit(numberOfItems);
-    } else {
-      query = query.limit(numberOfItems);
+      query = query.startAfterDocument(startAt);
     }
 
-    final festivals = await query.get().then((value) {
+    final festivals = await query.limit(numberOfItems).get().then((value) {
       lastFestival = value.docs.last;
       return value.docs
           .map((e) => Festival.from(e.data() as Map<String, dynamic>))
@@ -53,106 +52,139 @@ class FestivalService {
     return festivalCollectionReference.get().then((value) {
       final allFest = value.docs
           .map((festival) =>
-              Festival.from(festival.data() as Map<String, dynamic>))
+          Festival.from(festival.data() as Map<String, dynamic>))
           .toList();
       return allFest;
     });
   }
 
-  Future<String?> getIdFestByName(String name) {
-    return festivalCollectionReference
-        .where("name", isEqualTo: name)
+  // To deprecate, use getNextFestivals instead
+  Future<List<Festival>> searchFestival(String name) async {
+    return festivalCollectionReference.where("name", isEqualTo: name)
+        .limit(200)
         .get()
         .then((value) {
       final allFest = value.docs
           .map((festival) =>
-              Festival.from(festival.data() as Map<String, dynamic>))
-          .toList();
-      if (allFest.isNotEmpty) {
-        return allFest[0].id;
-      } else {
-        return null;
-      }
+          Festival.from(festival.data() as Map<String, dynamic>)).toList();
+      return allFest;
     });
   }
 
-  Future writeDataInJson(Festival fest) async {
-    var input = await File("festival.json").readAsString();
-    List<dynamic> data = json.decode(input);
-    data.add(MapEntry(fest.name, fest.geolocation));
-    File("festival.json").writeAsString(data.toString());
-  }
-
-  Future<List<Festival>> getRandomFestival(int numberOfRandom) {
-    return festivalCollectionReference
-        .limit(numberOfRandom)
+  Future<List<Festival>> filterFestival(String query) async {
+    return festivalCollectionReference.where("majorField", isEqualTo: query)
         .get()
         .then((value) {
-      final listFest = value.docs
-          .map((e) => Festival.from(e.data() as Map<String, dynamic>))
-          .toList();
-      return listFest;
+      final allFest = value.docs
+          .map((festival) =>
+          Festival.from(festival.data() as Map<String, dynamic>)).toList();
+      return allFest;
     });
   }
 
-  modifyStatus(EventStatus event) {
-    festival?.status = event;
-  }
+    Future<String?> getIdFestByName(String name) {
+      return festivalCollectionReference
+          .where("name", isEqualTo: name)
+          .get()
+          .then((value) {
+        final allFest = value.docs
+            .map((festival) =>
+            Festival.from(festival.data() as Map<String, dynamic>))
+            .toList();
+        if (allFest.isNotEmpty) {
+          return allFest[0].id;
+        } else {
+          return null;
+        }
+      });
+    }
 
-  Future createFestivalInDataBase(Festival festival) async {
-    festivalCollectionReference.doc(festival.id).set(festival.toJson());
-  }
+    Future writeDataInJson(Festival fest) async {
+      var input = await File("festival.json").readAsString();
+      List<dynamic> data = json.decode(input);
+      data.add(MapEntry(fest.name, fest.geolocation));
+      File("festival.json").writeAsString(data.toString());
+    }
 
-  Future modifyFestivalInDataBase(Festival festival) async {
-    festivalCollectionReference.doc(festival.id).update(festival.toJson());
-  }
+    Future<List<Festival>> getRandomFestival(int numberOfRandom) {
+      return festivalCollectionReference
+          .limit(numberOfRandom)
+          .get()
+          .then((value) {
+        final listFest = value.docs
+            .map((e) => Festival.from(e.data() as Map<String, dynamic>))
+            .toList();
+        return listFest;
+      });
+    }
 
-  Future<Festival> getById(String id) async {
-    return festivalCollectionReference.doc(id).get().then((fest) {
-      festival = Festival.from(fest.data() as Map<String, dynamic>);
-      return festival!;
-    });
-  }
+    modifyStatus(EventStatus event) {
+      festival?.status = event;
+    }
 
-  modifyFestival(
-      String id,
-      EventStatus status,
-      String name,
-      String city,
-      String postalCode,
-      String majorField,
-      String webSite,
-      String creatorId,
-      String contactEmail,
-      int availableTickets,
-      double longitude,
-      double latitude) {
-    festival?.setAll(id, status, name, city, postalCode, majorField, webSite,
-        creatorId, contactEmail, availableTickets, longitude, latitude);
-  }
+    Future createFestivalInDataBase(Festival festival) async {
+      festivalCollectionReference.doc(festival.id).set(festival.toJson());
+    }
 
-  createFestival(
-      EventStatus status,
-      String name,
-      String city,
-      String postalCode,
-      String majorField,
-      String webSite,
-      String creatorId,
-      String contactEmail,
-      int availableTickets,
-      double longitude,
-      double latitude) {
-    festival?.id = uuid.v4();
-    festival?.status = status;
-    festival?.name = name;
-    festival?.city = city;
-    festival?.postalCode = postalCode;
-    festival?.majorField = majorField;
-    festival?.webSite = webSite;
-    festival?.creatorId = creatorId;
-    festival?.contactEmail = contactEmail;
-    festival?.availableTickets = availableTickets;
-    festival?.geolocation = [longitude, latitude];
+    Future modifyFestivalInDataBase(Festival festival) async {
+      festivalCollectionReference.doc(festival.id).update(festival.toJson());
+    }
+
+    Future<Festival> getById(String id) async {
+      return festivalCollectionReference.doc(id).get().then((fest) {
+        festival = Festival.from(fest.data() as Map<String, dynamic>);
+        return festival!;
+      });
+    }
+
+    modifyFestival(String id,
+        EventStatus status,
+        String name,
+        String city,
+        String postalCode,
+        String majorField,
+        String webSite,
+        String creatorId,
+        String contactEmail,
+        int availableTickets,
+        double longitude,
+        double latitude) {
+      festival?.setAll(
+          id,
+          status,
+          name,
+          city,
+          postalCode,
+          majorField,
+          webSite,
+          creatorId,
+          contactEmail,
+          availableTickets,
+          longitude,
+          latitude);
+    }
+
+    createFestival(EventStatus status,
+        String name,
+        String city,
+        String postalCode,
+        String majorField,
+        String webSite,
+        String creatorId,
+        String contactEmail,
+        int availableTickets,
+        double longitude,
+        double latitude) {
+      festival?.id = uuid.v4();
+      festival?.status = status;
+      festival?.name = name;
+      festival?.city = city;
+      festival?.postalCode = postalCode;
+      festival?.majorField = majorField;
+      festival?.webSite = webSite;
+      festival?.creatorId = creatorId;
+      festival?.contactEmail = contactEmail;
+      festival?.availableTickets = availableTickets;
+      festival?.geolocation = [longitude, latitude];
+    }
   }
-}

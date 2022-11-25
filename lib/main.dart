@@ -1,8 +1,8 @@
 import 'package:festival/components/creation_festival.dart';
 import 'package:festival/components/error.dart';
+import 'package:festival/components/festival_list_page.dart';
 import 'package:festival/components/home.dart';
 import 'package:festival/components/map.dart';
-import 'package:festival/components/paginated_festival_list.dart';
 import 'package:festival/components/profile.dart';
 import 'package:festival/components/scaffold_home.dart';
 import 'package:festival/components/scaffold_with_bottom_nav_bar.dart';
@@ -138,7 +138,7 @@ final GoRouter _router = GoRouter(
             name: 'list',
             path: '/fest/list',
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: FestivalList(),
+              child: FestivalListPage(),
             ),
           ),
           GoRoute(

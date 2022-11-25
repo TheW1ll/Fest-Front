@@ -6,7 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:festival/models/festival.dart';
 
 class FestivalList extends StatefulWidget {
-  const FestivalList({Key? key}) : super(key: key);
+  const FestivalList({Key? key, this.nameField, this.genreField})
+      : super(key: key);
+
+  final String? nameField;
+  final String? genreField;
 
   @override
   State<FestivalList> createState() => _FestivalListState();
@@ -34,8 +38,8 @@ class _FestivalListState extends State<FestivalList> {
 
   Future<void> fetchData() async {
     try {
-      final result = await FestivalService()
-          .getNextFestivals(_lastFestival, _numberOfItemsPerRequest);
+      final result = await FestivalService().getNextFestivals(_lastFestival,
+          _numberOfItemsPerRequest, widget.nameField, widget.genreField);
       List<Festival> festivalList = result.item1;
 
       setState(() {
