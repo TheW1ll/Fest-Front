@@ -19,50 +19,49 @@ class _CFState extends State<CreationFestival> {
   var formKey = GlobalKey<FormState>();
   final List<String> status = ['OPEN_TICKETING', 'LAST_TICKETS', 'COMPLETE'];
   String state = 'COMPLETE';
-  final Email = TextEditingController();
-  final Name = TextEditingController();
-  final MajorField = TextEditingController();
-  final City = TextEditingController();
-  final PostalCode = TextEditingController();
-  final WebSite = TextEditingController();
-  final Longitude = TextEditingController();
-  final Latitude = TextEditingController();
-  final Tickets = TextEditingController();
+  final email = TextEditingController();
+  final name = TextEditingController();
+  final majorField = TextEditingController();
+  final city = TextEditingController();
+  final postalCode = TextEditingController();
+  final webSite = TextEditingController();
+  final longitude = TextEditingController();
+  final latitude = TextEditingController();
+  final tickets = TextEditingController();
   static const widthMobile = 700.0;
 
   @override
   void dispose() {
     super.dispose();
-    Email.dispose();
-    Name.dispose();
-    MajorField.dispose();
-    City.dispose();
-    PostalCode.dispose();
-    WebSite.dispose();
-    Longitude.dispose();
-    Latitude.dispose();
-    Tickets.dispose();
+    email.dispose();
+    name.dispose();
+    majorField.dispose();
+    city.dispose();
+    postalCode.dispose();
+    webSite.dispose();
+    longitude.dispose();
+    latitude.dispose();
+    tickets.dispose();
   }
 
   void isEditing(String? id) async {
     if (id != null) {
       Festival fest = await FestivalService().getById(id);
-      //FestivalService().getById(id).then((festival) => fest = festival);
       if (fest.contactEmail != null) {
-        Email.text = fest.contactEmail!;
+        email.text = fest.contactEmail!;
       }
-      Name.text = fest.name;
-      MajorField.text = fest.majorField;
-      City.text = fest.city;
-      Tickets.text = fest.availableTickets.toString();
-      Longitude.text = fest.geolocation[0].toString();
-      Latitude.text = fest.geolocation[1].toString();
+      name.text = fest.name;
+      majorField.text = fest.majorField;
+      city.text = fest.city;
+      tickets.text = fest.availableTickets.toString();
+      longitude.text = fest.geolocation[0].toString();
+      latitude.text = fest.geolocation[1].toString();
 
       if (fest.postalCode != null) {
-        PostalCode.text = fest.postalCode!;
+        postalCode.text = fest.postalCode!;
       }
       if (fest.webSite != null) {
-        WebSite.text = fest.webSite!;
+        webSite.text = fest.webSite!;
       }
     }
   }
@@ -87,7 +86,7 @@ class _CFState extends State<CreationFestival> {
                 children: [
                   TextFormField(
                     key: const Key("Name"),
-                    controller: Name,
+                    controller: name,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                         hintText: '',
@@ -96,7 +95,7 @@ class _CFState extends State<CreationFestival> {
                             borderRadius: BorderRadius.circular(7.0))),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'A Festival name is required';
+                        return 'A name is required';
                       }
                       return null;
                     },
@@ -105,7 +104,7 @@ class _CFState extends State<CreationFestival> {
                     height: 16,
                   ),
                   TextFormField(
-                    controller: MajorField,
+                    controller: majorField,
                     key: const Key("MajorField"),
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
@@ -124,7 +123,7 @@ class _CFState extends State<CreationFestival> {
                     height: 16,
                   ),
                   TextFormField(
-                    controller: City,
+                    controller: city,
                     key: const Key("City"),
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
@@ -134,7 +133,7 @@ class _CFState extends State<CreationFestival> {
                             borderRadius: BorderRadius.circular(7.0))),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "A city's Festival is required";
+                        return "A city is required";
                       }
                       return null;
                     },
@@ -143,12 +142,12 @@ class _CFState extends State<CreationFestival> {
                     height: 16,
                   ),
                   TextFormField(
-                    controller: PostalCode,
+                    controller: postalCode,
                     key: const Key("PostalCode"),
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         hintText: '',
-                        labelText: 'Postal Code of the city',
+                        labelText: 'Postal code',
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(7.0))),
                     validator: (value) {
@@ -162,7 +161,7 @@ class _CFState extends State<CreationFestival> {
                     height: 16,
                   ),
                   TextFormField(
-                    controller: Email,
+                    controller: email,
                     key: const Key("Email"),
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
@@ -172,7 +171,7 @@ class _CFState extends State<CreationFestival> {
                             borderRadius: BorderRadius.circular(7.0))),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'A Festival mail for contact is required';
+                        return 'A contact email is required';
                       }
                       return null;
                     },
@@ -181,17 +180,17 @@ class _CFState extends State<CreationFestival> {
                     height: 16,
                   ),
                   TextFormField(
-                    controller: WebSite,
+                    controller: webSite,
                     key: const Key("WebSite"),
                     keyboardType: TextInputType.url,
                     decoration: InputDecoration(
                         hintText: '',
-                        labelText: "Website's Festival",
+                        labelText: "Festival's website",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(7.0))),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "A website's festival is required";
+                        return "A website is required";
                       }
                       return null;
                     },
@@ -200,7 +199,7 @@ class _CFState extends State<CreationFestival> {
                     height: 16,
                   ),
                   TextFormField(
-                    controller: Longitude,
+                    controller: longitude,
                     key: const Key("Longitude"),
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
@@ -219,7 +218,7 @@ class _CFState extends State<CreationFestival> {
                     height: 16,
                   ),
                   TextFormField(
-                    controller: Latitude,
+                    controller: latitude,
                     key: const Key("Latitude"),
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
@@ -238,7 +237,7 @@ class _CFState extends State<CreationFestival> {
                     height: 16,
                   ),
                   TextFormField(
-                    controller: Tickets,
+                    controller: tickets,
                     key: const Key("Tickets"),
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
@@ -248,7 +247,7 @@ class _CFState extends State<CreationFestival> {
                             borderRadius: BorderRadius.circular(7.0))),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "A number of tickets available is required";
+                        return "A number of available tickets is required";
                       }
                       return null;
                     },
@@ -283,9 +282,9 @@ class _CFState extends State<CreationFestival> {
                             if (widget.idFestival == null) {
                               List<double> listLoc = [
                                 double.parse(
-                                    Longitude.text.replaceAll(",", ".")),
+                                    longitude.text.replaceAll(",", ".")),
                                 double.parse(
-                                    Latitude.text.replaceAll(",", ".")),
+                                    latitude.text.replaceAll(",", ".")),
                               ];
 
                               String idFest = const Uuid().v4().toString();
@@ -298,14 +297,14 @@ class _CFState extends State<CreationFestival> {
                               Festival festival = Festival(
                                   idFest,
                                   EventStatus.values.elementAt(statusInt),
-                                  Name.text,
-                                  City.text,
-                                  PostalCode.text,
-                                  MajorField.text,
-                                  WebSite.text,
+                                  name.text,
+                                  city.text,
+                                  postalCode.text,
+                                  majorField.text,
+                                  webSite.text,
                                   user,
-                                  Email.text,
-                                  int.parse(Tickets.text),
+                                  email.text,
+                                  int.parse(tickets.text),
                                   listLoc);
 
                               FestivalService()
@@ -313,9 +312,9 @@ class _CFState extends State<CreationFestival> {
                             } else {
                               List<double> listLoc = [
                                 double.parse(
-                                    Longitude.text.replaceAll(",", ".")),
+                                    longitude.text.replaceAll(",", ".")),
                                 double.parse(
-                                    Latitude.text.replaceAll(",", ".")),
+                                    latitude.text.replaceAll(",", ".")),
                               ];
 
                               int statusInt = status.indexOf(state);
@@ -326,14 +325,14 @@ class _CFState extends State<CreationFestival> {
                               Festival festival = Festival(
                                   widget.idFestival.toString(),
                                   EventStatus.values.elementAt(statusInt),
-                                  Name.text,
-                                  City.text,
-                                  PostalCode.text,
-                                  MajorField.text,
-                                  WebSite.text,
+                                  name.text,
+                                  city.text,
+                                  postalCode.text,
+                                  majorField.text,
+                                  webSite.text,
                                   user,
-                                  Email.text,
-                                  int.parse(Tickets.text),
+                                  email.text,
+                                  int.parse(tickets.text),
                                   listLoc);
                               FestivalService()
                                   .modifyFestivalInDataBase(festival);
